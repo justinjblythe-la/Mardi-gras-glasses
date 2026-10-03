@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=600,height=600,initial-scale=1">
+<title>Mardi Gras Board</title>
+<style>
+/* 600x600 additive display: black reads as clear, so text and accents must be bright; no pure-black fills behind text */
+:root{
+  --bg:#000000;          /* transparent on the lens */
+  --card:#1A1024;        /* faint purple tint so the focused card reads as a surface */
+  --ink:#F4EEFA; --muted:#B8A9C9;
+  --purple:#C79BFF; --green:#6CF0A8; --gold:#FFD15C; --red:#FF7A6E;
+  --font:-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html,body{width:600px;height:600px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--font)}
+body{padding:28px 32px;display:flex;flex-direction:column;gap:14px}
+header{display:flex;justify-content:space-between;align-items:baseline}
+h1{font-size:28px;font-weight:800;letter-spacing:.3px}
+.count{font-size:22px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums}
+.tabs{display:flex;gap:8px}
+.tab{font-size:18px;font-weight:700;padding:6px 14px;border-radius:999px;border:2px solid var(--muted);color:var(--muted)}
+.tab.on{border-color:var(--purple);color:var(--ink);background:#2A1840}
+#list{flex:1;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.item{border:2px solid transparent;border-left:6px solid var(--muted);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.item.todo{border-left-color:var(--purple)} .item.waiting{border-left-color:var(--gold)} .item.late{border-left-color:var(--red)}
+.item.focus{border-color:var(--ink);background:var(--card)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.title{font-size:24px;font-weight:700;line-height:1.2}
+.when{font-size:20px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.when.late{color:var(--red)} .when.soon{color:var(--gold)}
+.sub{font-size:18px;color:var(--muted)}
+.next{font-size:20px;color:var(--green);line-height:1.3}
+.hint{font-size:16px;color:var(--muted);text-align:center}
+.empty{font-size:24px;color:var(--muted);text-align:center;margin-top:120px}
+</style>
+</head>
+<body>
+<header><h1>Mardi Gras</h1><div class="count" id="count"></div></header>
+<div class="tabs" id="tabs"></div>
+<div id="list"></div>
+<div class="hint" id="hint">◀ ▶ switch · ▲ ▼ scroll · tap to open</div>
+<script>
+const MARDI_GRAS = new Date(2027,1,9); // Fat Tuesday 2027 (Easter is Mar 28)
+const TABS = [["all","Open"],["soon","2 weeks"],["waiting","Waiting"]];
+let items = [], tab = 0, pos = 0, open = null;
+const PAGE = 4;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const today = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
+const parse = s => { if(!s) return null; const [y,m,d] = s.split("-").map(Number); return new Date(y,m-1,d); };
+const days = s => { const d = parse(s); return d ? Math.round((d - today())/864e5) : null; };
+const short = s => parse(s).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+
+function visible(){
+  let l = items.filter(i => i.status !== "done");
+  if (TABS[tab][0] === "soon") l = l.filter(i => i.due && days(i.due) <= 14);
+  if (TABS[tab][0] === "waiting") l = l.filter(i => i.status === "waiting");
+  return l.sort((a,b) => (a.due||"9999").localeCompare(b.due||"9999"));
+}
+function render(){
+  const left = Math.round((MARDI_GRAS - today())/864e5);
+  document.getElementById("count").textContent = left > 0 ? `${left} days` : left === 0 ? "Today!" : "";
+  document.getElementById("tabs").innerHTML = TABS.map(([,l],i) => `<span class="tab ${i===tab?"on":""}">${l}</span>`).join("");
+  const l = visible();
+  pos = Math.min(pos, Math.max(0, l.length-1));
+  const start = Math.max(0, Math.min(pos - 1, l.length - (open ? 2 : PAGE)));
+  const shown = l.slice(start, start + (open ? 2 : PAGE));
+  document.getElementById("list").innerHTML = shown.length ? shown.map(i => {
+    const n = i.due ? days(i.due) : null, late = n !== null && n < 0;
+    const whenCls = late ? "late" : (n !== null && n <= 3 ? "soon" : "");
+    const isF = l.indexOf(i) === pos, isOpen = isF && open === i.id;
+    return `<div class="item ${i.status} ${late?"late":""} ${isF?"focus":""}">
+      <div class="top"><div class="title">${esc(i.title)}</div>${i.due?`<div class="when ${whenCls}">${late?"Late · ":""}${esc(short(i.due))}</div>`:""}</div>
+      <div class="sub">${esc(i.category)}${i.status==="waiting"?" · waiting":""}</div>
+      ${isOpen && i.next ? `<div class="next">${esc(i.next)}</div>` : ""}
+    </div>`;
+  }).join("") : `<div class="empty">Nothing here.</div>`;
+}
+document.addEventListener("keydown", e => {
+  const l = visible();
+  if (e.key === "ArrowDown") { pos = Math.min(pos+1, l.length-1); open = null; }
+  else if (e.key === "ArrowUp") { pos = Math.max(pos-1, 0); open = null; }
+  else if (e.key === "ArrowRight") { tab = (tab+1) % TABS.length; pos = 0; open = null; }
+  else if (e.key === "ArrowLeft") { tab = (tab+TABS.length-1) % TABS.length; pos = 0; open = null; }
+  else if (e.key === "Enter") { const i = l[pos]; open = i && open !== i.id ? i.id : null; }
+  else return;
+  e.preventDefault(); render();
+});
+async function load(){
+  try { const r = await fetch("data.json?t=" + Date.now()); const d = await r.json(); items = d.items || []; }
+  catch(_) { document.getElementById("list").innerHTML = `<div class="empty">Couldn't load the list.</div>`; return; }
+  render();
+}
+load(); setInterval(load, 10*60*1000);
+</script>
+</body>
+</html>

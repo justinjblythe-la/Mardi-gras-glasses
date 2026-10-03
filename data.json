@@ -1,0 +1,74 @@
+{
+ "updated": "2026-10-03T10:00:00-05:00",
+ "items": [
+  {
+   "id": "book-design-visit",
+   "title": "Schedule invitation design visit",
+   "category": "Invitations",
+   "status": "todo",
+   "due": "2026-10-05",
+   "next": "Call Paper n Things to book a visit for the week of Oct 12."
+  },
+  {
+   "id": "invite-design",
+   "title": "Create invitations (design visit)",
+   "category": "Invitations",
+   "status": "todo",
+   "due": "2026-10-12",
+   "next": "Bring guest count, wording and colors/theme ideas."
+  },
+  {
+   "id": "invite-print",
+   "title": "Approve proof & get invitations printed",
+   "category": "Invitations",
+   "status": "todo",
+   "due": "2026-10-26",
+   "next": "Printing takes about a week."
+  },
+  {
+   "id": "invite-prep",
+   "title": "Pick up invitations, address envelopes, buy stamps",
+   "category": "Invitations",
+   "status": "todo",
+   "due": "2026-11-02"
+  },
+  {
+   "id": "invite-mail",
+   "title": "Mail invitations",
+   "category": "Invitations",
+   "status": "todo",
+   "due": "2026-11-09",
+   "next": "Last day to mail is Nov 16."
+  },
+  {
+   "id": "save-the-dates",
+   "title": "Pick up save the dates",
+   "category": "Invitations",
+   "status": "waiting",
+   "due": null,
+   "next": "Waiting on Paper n Things to say they're ready."
+  },
+  {
+   "id": "kings-ball-dj",
+   "title": "Book a DJ for the Kings Ball",
+   "category": "Kings Ball",
+   "status": "waiting",
+   "due": null,
+   "next": "Waiting on Daren at Serenity for DJ contacts."
+  },
+  {
+   "id": "boots",
+   "title": "Work on my boots",
+   "category": "Costume & boots",
+   "status": "todo",
+   "due": null
+  },
+  {
+   "id": "napkins-cups",
+   "title": "Order napkins and cups for my party",
+   "category": "Party",
+   "status": "todo",
+   "due": null
+  }
+ ]
+}
