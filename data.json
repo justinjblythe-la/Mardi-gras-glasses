@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-03T10:00:00-05:00",
+ "updated": "2026-10-03T12:42:00-05:00",
  "items": [
   {
    "id": "book-design-visit",
@@ -7,7 +7,7 @@
    "category": "Invitations",
    "status": "todo",
    "due": "2026-10-05",
-   "next": "Call Paper n Things to book a visit for the week of Oct 12."
+   "next": "Call to book a visit for the week of Oct 12."
   },
   {
    "id": "invite-design",
@@ -23,7 +23,7 @@
    "category": "Invitations",
    "status": "todo",
    "due": "2026-10-26",
-   "next": "Printing takes about a week."
+   "next": "Save the dates took about a week to print."
   },
   {
    "id": "invite-prep",
@@ -38,15 +38,7 @@
    "category": "Invitations",
    "status": "todo",
    "due": "2026-11-09",
-   "next": "Last day to mail is Nov 16."
-  },
-  {
-   "id": "save-the-dates",
-   "title": "Pick up save the dates",
-   "category": "Invitations",
-   "status": "waiting",
-   "due": null,
-   "next": "Waiting on Paper n Things to say they're ready."
+   "next": "Target Nov 9. Last day to mail is Nov 16."
   },
   {
    "id": "kings-ball-dj",
@@ -54,19 +46,27 @@
    "category": "Kings Ball",
    "status": "waiting",
    "due": null,
-   "next": "Waiting on Daren at Serenity for DJ contacts."
-  },
-  {
-   "id": "boots",
-   "title": "Work on my boots",
-   "category": "Costume & boots",
-   "status": "todo",
-   "due": null
+   "next": "Send the drafted email asking Daren for Audio Blendz and DJ Lime Wire contacts; Geaux Getter (Chris) is (337) 529-2264."
   },
   {
    "id": "napkins-cups",
    "title": "Order napkins and cups for my party",
    "category": "Party",
+   "status": "todo",
+   "due": null
+  },
+  {
+   "id": "save-the-dates",
+   "title": "Pick up save the dates",
+   "category": "Invitations",
+   "status": "waiting",
+   "due": null,
+   "next": "Waiting to hear they're ready for pickup — sent to print 9/21."
+  },
+  {
+   "id": "boots",
+   "title": "Work on my boots",
+   "category": "Costume & boots",
    "status": "todo",
    "due": null
   }
